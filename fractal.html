@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal Art</title>
+    <style>
+        #fractalCanvas {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fractalCanvas" width="600" height="600"></canvas>
+    <button onclick="increaseDepth()">Increase Depth</button>
+
+    <script>
+        const canvas = document.getElementById('fractalCanvas');
+        const ctx = canvas.getContext('2d');
+        let depth = 0;
+
+        function drawFractal(depth) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawFractalRecursive(depth, 0, 0, canvas.width, canvas.height);
+        }
+
+        function drawFractalRecursive(depth, x, y, width, height) {
+            if (depth === 0) {
+                ctx.fillRect(x, y, width, height);
+            } else {
+                const w = width / 3;
+                const h = height / 3;
+
+                drawFractalRecursive(depth - 1, x, y, w, h); // top left
+                drawFractalRecursive(depth - 1, x + w, y, w, h); // top center
+                drawFractalRecursive(depth - 1, x + 2 * w, y, w, h); // top right
+
+                drawFractalRecursive(depth - 1, x, y + h, w, h); // middle left
+                drawFractalRecursive(depth - 1, x + 2 * w, y + h, w, h); // middle right
+
+                drawFractalRecursive(depth - 1, x, y + 2 * h, w, h); // bottom left
+                drawFractalRecursive(depth - 1, x + w, y + 2 * h, w, h); // bottom center
+                drawFractalRecursive(depth - 1, x + 2 * w, y + 2 * h, w, h); // bottom right
+            }
+        }
+
+        function increaseDepth() {
+            depth++;
+            drawFractal(depth);
+        }
+
+        drawFractal(depth);
+    </script>
+</body>
+</html>
